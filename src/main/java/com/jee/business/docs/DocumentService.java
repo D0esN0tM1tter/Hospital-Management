@@ -10,7 +10,7 @@ public interface DocumentService {
 
     public int insertDocument(Document document);
     public Document selectDocument(int docId) throws FileNotFoundException, IOException ;
-    public int updateDocument(int docId);
+    public void updateDocument(int documentid, Document updatedDocument) throws SQLException;
     public int deleteDocument(int docId) throws SQLException;
 
 }

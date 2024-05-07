@@ -68,28 +68,42 @@ public class DocumentManager implements CrudInterfaceDao {
     }
 
 
-    @Override
-    public int update(Object obj) {
-        if (!(obj instanceof Document)) {
-            throw new IllegalArgumentException("Object must be of type Document");
-        }
-        Document document = (Document) obj;
-        int rowsAffected = 0;
-        String sql = "UPDATE documents SET patientId=?, docType=?, path=?, toc=? , description = ? WHERE id=?";
-        try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
-            stmt.setInt(1, document.getPatientId());
-            stmt.setString(2, document.getDocType());
-            stmt.setString(3, document.getPath());
-            stmt.setTimestamp(4, document.getToc());
-            stmt.setInt(5, document.getId());
-            stmt.setString(6, document.getDescription());
-            rowsAffected = stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rowsAffected;
-    }
+    public void updateDocument(int documentId, Document updatedDocument) throws SQLException {
+	    String deleteSql = "DELETE FROM document WHERE Id = ? ";
+	    String insertSql = "INSERT INTO document (id,patientId, docType, paths, dateEnregistrement) VALUES (?,?, ?, ?, ?)";
 
+	    try (PreparedStatement deleteStatement =  cnc.prepareStatement(deleteSql);
+	         PreparedStatement insertStatement =  cnc.prepareStatement(insertSql)) {
+
+	        deleteStatement.setInt(1, documentId);
+	        deleteStatement.executeUpdate();
+
+	        insertStatement.setInt(1,documentId);
+	        insertStatement.setInt(2, updatedDocument.getPatientId());
+	        insertStatement.setString(3, updatedDocument.getDocType());
+	        insertStatement.setString(4, updatedDocument.getPath());
+	        insertStatement.setTimestamp(5, updatedDocument.getToc()); 
+	        insertStatement.executeUpdate();
+	    }
+	}
+	
+	public String getDocumentType(int documentid) throws SQLException {
+		String selectSql = "SELECT docType FROM document WHERE Id = ? ";
+		String docType = null;
+
+		try (PreparedStatement selectStatement =  cnc.prepareStatement(selectSql)) {
+			selectStatement.setInt(1, documentid);
+			ResultSet resultSet = selectStatement.executeQuery();
+			if (resultSet.next()) {
+				docType = resultSet.getString("docType");
+			}
+		}
+
+		return docType;
+	}
+
+	
+	
 
 
 

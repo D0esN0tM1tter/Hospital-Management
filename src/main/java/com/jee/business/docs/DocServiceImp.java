@@ -84,13 +84,35 @@ public class DocServiceImp implements DocumentService {
     
     }
 
-    @Override
-    public int updateDocument(int docId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateDocument'");
-    }
+    public void updateDocument(int documentid, Document updatedDocument) throws SQLException {
+		 
+		String oldDocType = docManager.getDocumentType(documentid);
+		if (oldDocType != null && oldDocType.equals(updatedDocument.getDocType())) {
 
-    @Override
+            // here i m not sure if i have to do the delete method or not because in the next update i do delete the doc
+            //  in that case it will be String oldFilePath = docManager.selectPath(documentid) and we should then add it to the CrudInterfaceDao
+			String oldFilePath = docManager.delete(documentid);
+
+			if (oldFilePath != null) {
+				File fileToDelete = new File(oldFilePath);
+				if (fileToDelete.exists() && fileToDelete.isFile()) {
+					if (fileToDelete.delete()) {
+						System.out.println("File deleted: " + oldFilePath);
+					} else {
+						System.out.println("Failed to delete file: " + oldFilePath);
+					}
+				} else {
+					System.out.println("File not found: " + oldFilePath);
+				}
+				docManager.updateDocument(documentid, updatedDocument);
+			} else {
+				System.out.println("File path not found for  ID: " + documentid );
+			}
+		} else {
+			System.out.println("Updated document type does not match the type of the oldest document.");
+		}
+}
+
     public int deleteDocument(int docId) throws SQLException {
         // 1: Delete the file from the database : 
         String path = this.docManager.delete(docId) ; 
