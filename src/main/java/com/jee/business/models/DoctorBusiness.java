@@ -8,7 +8,7 @@ import com.jee.dao.manager.DoctorManager;
 public class DoctorBusiness implements CrudInterface {
     CrudInterfaceDao manager;
 
-    public DoctorBusiness(DoctorManager manager) {
+    public DoctorBusiness(CrudInterfaceDao manager) {
         this.manager = manager;
     }
 
@@ -17,19 +17,26 @@ public class DoctorBusiness implements CrudInterface {
         return this.manager.insert(o);
     }
 
-    @Override
+ 
     public Object select(int id) {
         return this.manager.select(id);
     }
 
-    @Override
+  
     public int update(Object o) {
         return this.manager.update(o);
     }
 
-    @Override
+    
     public String delete(int id) throws SQLException {
         return this.manager.delete(id);
     }
+    public boolean verify(String login, String password) {
+		 if(manager.verify(login, password)==1) {
+			 return true;
+		 }
+		 return false;
+	 }
+	
 
 }

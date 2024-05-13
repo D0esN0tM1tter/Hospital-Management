@@ -159,10 +159,10 @@ public String delete(int id) throws SQLException {
 }
 
 @Override
-public List<Object> selecByPidAndType(int patientId, String docType) {
+public List<Document> selecByPidAndType(int patientId, String docType) {
 
     // initializing the list : 
-    List<Object> list = new ArrayList<>() ;
+    List<Document> list = new ArrayList<>() ;
 
     // 1 : formulate the query : 
     String query = "SELECT * FROM document JOIN patient ON document.patientId = patient.id WHERE document.type = ? ";
@@ -190,9 +190,22 @@ public List<Object> selecByPidAndType(int patientId, String docType) {
     return list ;
 }
 
-    
+@Override
+public int update(Object o) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int verify(String login, String password) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+
+}
 
         
-    }
+    
 
 

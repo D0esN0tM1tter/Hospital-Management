@@ -7,9 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.jee.Models.Document;
 import com.jee.dao.manager.CrudInterfaceDao;
+import com.jee.dao.manager.DoctorManager;
 import com.jee.dao.manager.DocumentManager;
 
 import java.awt.Desktop;
@@ -19,7 +21,7 @@ public class DocServiceImp implements DocumentService {
     private CrudInterfaceDao docManager ;
     private Directories directories ;
     
-    public DocServiceImp(DocumentManager docManager) {
+    public DocServiceImp(CrudInterfaceDao docManager) {
         this.docManager = docManager;
     }
 
@@ -129,5 +131,8 @@ public class DocServiceImp implements DocumentService {
         System.err.println("Failed to delete file ");
         return -1 ;
     }
-
+    public List<Document> selecByPidAndType(int patientId, String docType){
+    	 return this.docManager.selecByPidAndType(patientId, docType);
+    }
+   
 }

@@ -1,13 +1,16 @@
 package com.jee.dao.manager;
 
+import com.jee.dao.connection.SQLDataSource;
+import com.jee.Models.Admin;
+import com.jee.Models.Document;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.sql.Statement;
 
-import com.jee.dao.connection.SQLDataSource;
-import com.jee.Models.Admin;
+import java.util.List;
 
 public class AdminManager implements CrudInterfaceDao {
 
@@ -25,37 +28,33 @@ public class AdminManager implements CrudInterfaceDao {
             throw new IllegalArgumentException("Object must be of type Admin");
         }
         Admin admin = (Admin) obj;
-        int rowsAffected = 0;
-        String sql = "INSERT INTO admins VALUES (?, ?, ?)";
+        String sql = "INSERT INTO admins (firstname, lastname, username, passwd) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
-            stmt.setInt(1, admin.getId());
-            stmt.setString(2, admin.getUsername());
-            stmt.setString(3, admin.getPasswd());
-            rowsAffected = stmt.executeUpdate();
-            System.out.println("Record inserted successfully.");
+            stmt.setString(1, admin.getFirstname());
+            stmt.setString(2, admin.getLastname());
+            stmt.setString(3, admin.getUsername());
+            stmt.setString(4, admin.getPasswd());
+            return stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
-        return rowsAffected;
     }
 
     @Override
-    public Object select(int id) {
-        Admin admin = null;
+    public Admin select(int id) {
         String sql = "SELECT * FROM admins WHERE id = ?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                admin = new Admin();
-                admin.setId(rs.getInt("id"));
-                admin.setUsername(rs.getString("username"));
-                admin.setPasswd(rs.getString("passwd"));
+                return new Admin(rs.getString("username"), rs.getString("passwd"),
+                                 rs.getString("firstname"), rs.getString("lastname"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return admin;
+        return null;
     }
 
     @Override
@@ -64,37 +63,68 @@ public class AdminManager implements CrudInterfaceDao {
             throw new IllegalArgumentException("Object must be of type Admin");
         }
         Admin admin = (Admin) obj;
-        int rowsAffected = 0;
-        String sql = "UPDATE admins SET username=?, passwd=? WHERE id=?";
+        String sql = "UPDATE admins SET firstname=?, lastname=?, username=?, passwd=? WHERE id=?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
-            stmt.setString(1, admin.getUsername());
-            stmt.setString(2, admin.getPasswd());
-            stmt.setInt(3, admin.getId());
-            rowsAffected = stmt.executeUpdate();
+            stmt.setString(1, admin.getFirstname());
+            stmt.setString(2, admin.getLastname());
+            stmt.setString(3, admin.getUsername());
+            stmt.setString(4, admin.getPasswd());
+            stmt.setInt(5, admin.getId());
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public String delete(int id) {
+        String sql = "DELETE FROM admins WHERE id = ?";
+        try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                return "Admin deleted successfully.";
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rowsAffected;
+        return "Failed to delete admin.";
     }
 
     @Override
-    public String delete(int id) throws SQLException {
-        String query = "DELETE FROM admins WHERE id = ?";
-        try (PreparedStatement stm = cnc.prepareStatement(query)) {
-            stm.setInt(1, id);
-            int rowsAffected = stm.executeUpdate();
-            if (rowsAffected > 0) {
-                return "Admin with ID " + id + " deleted successfully.";
-            } else {
-                return "Admin with ID " + id + " not found.";
-            }
-        }
+    public List<Document> selecByPidAndType(int patientId, String docType) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public List<Object> selecByPidAndType(int patientId, String docType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'selecByPidAndType'");
+    public String getDocumentType(int documentId) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public void updateDocument(int documentId, Document updatedDocument) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
+	public int verify(String login, String password) {
+		try {
+			String sql = "SELECT COUNT(*) AS count_admin FROM  admin WHERE login = '" + login + "' AND password = '" + password + "'";
+		    int count = 0;
+
+		         Statement stmt = this.cnc.createStatement();
+		         ResultSet rs = stmt.executeQuery(sql) ;
+
+		        if (rs.next()) {
+		            count = rs.getInt("count_docteur");
+		            return count;
+		        }
+		         return -1;
+		    } catch (Exception e) {
+		        e.printStackTrace(); 
+		        return -1;
+		    }
+}
 
 }

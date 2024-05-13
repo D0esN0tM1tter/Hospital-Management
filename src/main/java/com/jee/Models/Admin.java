@@ -3,14 +3,16 @@ package com.jee.Models;
 public class Admin {
 	
 	   private int id;
+	   private String firstname;
+	   private String lastname;
 	   private String username;
 	   private String passwd;
-	   // autres attributs, constructeurs, getters et setters
+
 	   
 	   
-	public Admin(int id, String username, String passwd) {
-		super();
-		this.id = id;
+	public Admin(String firstname,String lastname,String username, String passwd) {
+		this.firstname=firstname;
+		this.lastname=lastname;
 		this.username = username;
 		this.passwd = passwd;
 	}
@@ -48,6 +50,26 @@ public class Admin {
 
 	public void setPasswd(String passwd) {
 		this.passwd = passwd;
+	}
+
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+
+	public String getLastname() {
+		return lastname;
+	}
+
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 	  
 	

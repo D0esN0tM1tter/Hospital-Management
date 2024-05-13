@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.jee.dao.connection.SQLDataSource;
+import com.jee.Models.Document;
 import com.jee.Models.Patient;
 
 public class PatientManager implements CrudInterfaceDao {
@@ -92,8 +93,26 @@ public class PatientManager implements CrudInterfaceDao {
     }
 
     @Override
-    public List<Object> selecByPidAndType(int patientId, String docType) {
+    public List<Document> selecByPidAndType(int patientId, String docType) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'selecByPidAndType'");
     }
+
+	@Override
+	public String getDocumentType(int documentid) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateDocument(int documentId, Document updatedDocument) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int verify(String login, String password) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

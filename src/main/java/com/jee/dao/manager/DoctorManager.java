@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import com.jee.dao.connection.SQLDataSource;
 import com.jee.Models.Doctor;
+import com.jee.Models.Document;
 
 public class DoctorManager implements CrudInterfaceDao {
 
@@ -28,9 +30,11 @@ public class DoctorManager implements CrudInterfaceDao {
         int rowsAffected = 0;
         String sql = "INSERT INTO doctors VALUES (?, ?, ?)";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
-            stmt.setInt(1, doctor.getId());
-            stmt.setString(2, doctor.getFname());
-            stmt.setString(3, doctor.getLname());
+            stmt.setString(1, doctor.getName());
+            stmt.setString(2, doctor.getFirstname());
+            stmt.setString(3, doctor.getLogin());
+            stmt.setString(3, doctor.getPassword());
+
             rowsAffected = stmt.executeUpdate();
             System.out.println("Record inserted successfully.");
         } catch (SQLException e) {
@@ -48,9 +52,11 @@ public class DoctorManager implements CrudInterfaceDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 doctor = new Doctor();
-                doctor.setId(rs.getInt("id"));
-                doctor.setFname(rs.getString("fname"));
-                doctor.setLname(rs.getString("lname"));
+                doctor.setName(rs.getString("Name"));
+                doctor.setFirstname(rs.getString("Firstname"));
+                doctor.setLogin(rs.getString("Login"));
+                doctor.setPassword("Password");
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,9 +73,11 @@ public class DoctorManager implements CrudInterfaceDao {
         int rowsAffected = 0;
         String sql = "UPDATE doctors SET fname=?, lname=? WHERE id=?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
-            stmt.setString(1, doctor.getFname());
-            stmt.setString(2, doctor.getLname());
-            stmt.setInt(3, doctor.getId());
+        	stmt.setString(1, doctor.getName());
+            stmt.setString(2, doctor.getFirstname());
+            stmt.setString(3, doctor.getLogin());
+            stmt.setString(3, doctor.getPassword());
+
             rowsAffected = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,8 +100,37 @@ public class DoctorManager implements CrudInterfaceDao {
     }
 
     @Override
-    public List<Object> selecByPidAndType(int patientId, String docType) {
+    public List<Document> selecByPidAndType(int patientId, String docType) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'selecByPidAndType'");
     }
-}
+
+	@Override
+	public String getDocumentType(int documentid) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateDocument(int documentId, Document updatedDocument) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+	public int verify(String login, String password) {
+		try {
+			String sql = "SELECT COUNT(*) AS count_docteur FROM docteur WHERE login = '" + login + "' AND password = '" + password + "'";
+		    int count = 0;
+
+		         Statement stmt = this.cnc.createStatement();
+		         ResultSet rs = stmt.executeQuery(sql) ;
+
+		        if (rs.next()) {
+		            count = rs.getInt("count_docteur");
+		            return count;
+		        }
+		         return -1;
+		    } catch (Exception e) {
+		        e.printStackTrace(); 
+		        return -1;
+		    }
+}}

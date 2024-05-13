@@ -9,7 +9,7 @@ public class AdminBusiness implements CrudInterface {
     private CrudInterfaceDao manager ;
 
 
-    public AdminBusiness(AdminManager manager) {
+    public AdminBusiness(CrudInterfaceDao manager) {
         this.manager = manager;
 
     }
@@ -32,5 +32,11 @@ public class AdminBusiness implements CrudInterface {
     public String delete(int id) throws SQLException {
         return this.manager.delete(id);
     }
+    public boolean verify(String login, String password) {
+		 if(manager.verify(login, password)==1) {
+			 return true;
+		 }
+		 return false;
+	 }
 
 }

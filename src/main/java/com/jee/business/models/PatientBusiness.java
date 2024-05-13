@@ -8,7 +8,7 @@ import com.jee.dao.manager.PatientManager;
 public class PatientBusiness implements CrudInterface {
 	CrudInterfaceDao manager ; 
 	
-	public PatientBusiness(PatientManager manager) {
+	public PatientBusiness(CrudInterfaceDao manager) {
 		this.manager = manager ;
 	}
 
@@ -30,6 +30,12 @@ public class PatientBusiness implements CrudInterface {
 	@Override
 	public String delete(int id) throws SQLException {
 		return this.manager.delete(id);
+	}
+
+	@Override
+	public boolean verify(String login, String password) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

@@ -8,5 +8,6 @@ public interface CrudInterface {
 	public Object select(int id );
 	public int update (Object o);
 	public String delete(int id ) throws SQLException;
+	public boolean verify(String login, String password);
 
 }
