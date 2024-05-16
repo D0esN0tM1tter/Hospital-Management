@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/homestyle.css">
+    <link rel="stylesheet" href="../css/aboutusstyle.css"> <!-- Added your style_template1.css here -->
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+    <title>Docshere - Simplify Your Medical Document Management</title>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+   
+</head>
+<body>
+     <div class="main">
+         <nav class="nav">
+            <div class="nav-logo">
+                <p>Docshere</p>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="home.html" class="link active">Home</a></li>
+                    <li><a href="login.html" class="link">Doctor</a></li>
+                    <li><a href="login.html" class="link">Admin</a></li>
+                    <li><a href="aboutus.html" class="link">About us</a></li>
+                </ul>
+            </div>
+            
+                <i class="bx bx-menu" onclick="toggleMenu()"></i>
+            </div>
+        </nav>
+         <div class="content">
+             <h1 class="anim">Docshere </h1>
+             <p class="anim">Step into the future of medical document management with Docshere. Our platform is 
+                designed to simplify, secure, and seamlessly collaborate on all aspects of healthcare documentation.
+                 With Docshere, you're not just adopting a system; you're embracing a revolutionary approach to managing
+                  medical records. Say goodbye to the complexities of traditional paperwork and welcome a streamlined, efficient
+                   solution that empowers you to focus more on patient care.
+
+                Discover the ease and reliability of Docshere as it transforms the way you handle medical documents. From 
+                organizing reports to securely sharing vital information, our platform ensures that your medical journey is 
+                marked by efficiency and innovation. Join us today and experience firsthand how Docshere is shaping the 
+                future of healthcare documentation.</p>
+                
+         </div>
+         <div class="scroll-indicator">
+            <ion-icon name="arrow-down-circle"></ion-icon>
+            <p>Scroll down to see our doctors</p>
+        </div>
+        
+     </div>
+
+    <!-- Your Template 1 HTML starts here -->
+    <div class="wrapper">
+        <i id="left" class="fa-solid fa-angle-left"></i>
+        <ul class="carousel">
+            <li class="card">
+                <div class="img"><img src="../img/img-1.jpg" alt="img" draggable="false"></div>
+                <h2>Dr. Alice Johnson</h2>
+                <span>Cardiology</span>
+            </li>
+            <li class="card">
+              <div class="img"><img src="../img/img-2.jpg" alt="img" draggable="false"></div>
+              <h2>Dr. Sarah Lee</h2>
+              <span>Dermatology</span>
+            </li>
+            <li class="card">
+              <div class="img"><img src="../img/img-3.jpg" alt="img" draggable="false"></div>
+              <h2>Dr. Michael Kim</h2>
+              <span>Pediatrics</span>
+            </li>
+            <li class="card">
+              <div class="img"><img src="../img/img-4.jpg" alt="img" draggable="false"></div>
+              <h2>Dr. Emma Patel</h2>
+              <span>Orthopedic Surgery</span>
+            </li>
+            <li class="card">
+              <div class="img"><img src="../img/img-5.jpg" alt="img" draggable="false"></div>
+              <h2>Dr. David Martinez</h2>
+              <span>Neurology</span>
+            </li>
+            <li class="card">
+              <div class="img"><img src="../img/img-6.jpg" alt="img" draggable="false"></div>
+              <h2>Dr. Robert Thompson</h2>
+              <span>Oncology</span>
+            </li>
+            <!-- Add other card items as needed -->
+        </ul>
+        <i id="right" class="fa-solid fa-angle-right"></i>
+    </div>
+    <!-- Your Template 1 HTML ends here -->
+
+    <footer>
+        <div class="row">
+            <div class="col">
+                <img src="../icons/Logo medico di famiglia _ Vettore Premium.jpeg" class="footer_logo">
+                <p class="footer_about">Empowering hospitals with seamless document management solutions for Excel, PDFs, and images. 
+                    Simplifying administrative tasks, ensuring efficiency, and enhancing patient care through streamlined data organization and accessibility.
+                </p>
+            </div>
+            <div class="col">
+                <h3>Office <div class="bottom_line"><span></span></div></h3>
+                <p>ENSAM RABAT</p>
+                <p>Adress</p>
+                <p>B.P, 6207 Av. des Forces Armées Royales, Rabat 10100</p>
+                <p class="footer_email">ensamrabatindia@gamil.com</p>
+                <h4>+212666666666</h4>
+            </div>
+            <div class="col">
+                <h3>Links <div class="bottom_line"><span></span></div></h3>
+                <ul>
+                    <li><a href="">HOME</a></li>
+                    <li><a href="">ABOUT</a></li>
+                    <li><a href="">SERVICE</a></li>
+                    <li><a href="">CONTACT US</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <h3>Newsletter <div class="bottom_line"><span></span></div></h3>
+                <form>
+                    <ion-icon class="icon" name="mail"></ion-icon>
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit"><ion-icon class="icon_right" name="arrow-round-forward"></ion-icon></button>
+                </form>
+                <div class="social_icons">
+                    <ion-icon class="social_icon" name="logo-facebook"></ion-icon>
+                    <ion-icon class="social_icon" name="logo-whatsapp"></ion-icon>
+                    <ion-icon class="social_icon" name="logo-twitter"></ion-icon>
+                    <ion-icon class="social_icon" name="logo-instagram"></ion-icon>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">INDIA Ⓒ 2024 - All Rights Reserved</p>
+    </footer> 
+    <script>
+        function toggleMenu() {
+            var navMenu = document.getElementById("navMenu");
+            navMenu.classList.toggle("show");
+        }
+    </script>
+</body>   
+</html>
