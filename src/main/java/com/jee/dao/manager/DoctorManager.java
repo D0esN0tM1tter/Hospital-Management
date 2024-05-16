@@ -11,7 +11,7 @@ import com.jee.dao.connection.SQLDataSource;
 import com.jee.Models.Doctor;
 import com.jee.Models.Document;
 
-public class DoctorManager implements CrudInterfaceDao {
+public class DoctorManager implements DaoLogic {
 
     private SQLDataSource ds;
     private Connection cnc;

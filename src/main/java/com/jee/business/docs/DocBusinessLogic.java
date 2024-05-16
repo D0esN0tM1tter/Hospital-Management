@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.jee.Models.Document;
 
-public interface DocumentService {
+public interface DocBusinessLogic {
 
     public int insertDocument(Document document);
     public Document selectDocument(int docId) throws FileNotFoundException, IOException ;

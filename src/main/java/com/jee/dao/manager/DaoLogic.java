@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.jee.Models.Document;
 
-public interface CrudInterfaceDao {
+public interface DaoLogic {
     public int insert(Object o);
     
     public Object select(int id);

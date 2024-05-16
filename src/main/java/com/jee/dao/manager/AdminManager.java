@@ -12,12 +12,13 @@ import java.sql.Statement;
 
 import java.util.List;
 
-public class AdminManager implements CrudInterfaceDao {
+
+public class AdminManager implements DaoLogic {
 
     private SQLDataSource ds;
     private Connection cnc;
 
-    public AdminManager(SQLDataSource ds) {
+    public AdminManager(SQLDataSource ds) throws SQLException {
         this.ds = ds;
         this.cnc = this.ds.getConnection();
     }
@@ -49,7 +50,7 @@ public class AdminManager implements CrudInterfaceDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Admin(rs.getString("username"), rs.getString("passwd"),
-                                 rs.getString("firstname"), rs.getString("lastname"));
+                        rs.getString("firstname"), rs.getString("lastname"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,24 +108,24 @@ public class AdminManager implements CrudInterfaceDao {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public int verify(String login, String password) {
+        try {
+            String sql = "SELECT COUNT(*) AS count_admin FROM  admin WHERE login = '" + login + "' AND password = '"
+                    + password + "'";
+            int count = 0;
 
-	public int verify(String login, String password) {
-		try {
-			String sql = "SELECT COUNT(*) AS count_admin FROM  admin WHERE login = '" + login + "' AND password = '" + password + "'";
-		    int count = 0;
+            Statement stmt = this.cnc.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
-		         Statement stmt = this.cnc.createStatement();
-		         ResultSet rs = stmt.executeQuery(sql) ;
-
-		        if (rs.next()) {
-		            count = rs.getInt("count_docteur");
-		            return count;
-		        }
-		         return -1;
-		    } catch (Exception e) {
-		        e.printStackTrace(); 
-		        return -1;
-		    }
-}
+            if (rs.next()) {
+                count = rs.getInt("count_docteur");
+                return count;
+            }
+            return -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 
 }

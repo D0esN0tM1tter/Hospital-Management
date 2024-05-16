@@ -2,14 +2,13 @@ package com.jee.business.models;
 
 import java.sql.SQLException;
 
-import com.jee.dao.manager.AdminManager;
-import com.jee.dao.manager.CrudInterfaceDao;
+import com.jee.dao.manager.DaoLogic;
 
-public class AdminBusiness implements CrudInterface {
-    private CrudInterfaceDao manager ;
+public class AdminBusiness implements ModelBusinessLogic {
+    private DaoLogic manager ;
 
 
-    public AdminBusiness(CrudInterfaceDao manager) {
+    public AdminBusiness(DaoLogic manager) {
         this.manager = manager;
 
     }
@@ -32,6 +31,8 @@ public class AdminBusiness implements CrudInterface {
     public String delete(int id) throws SQLException {
         return this.manager.delete(id);
     }
+
+    
     public boolean verify(String login, String password) {
 		 if(manager.verify(login, password)==1) {
 			 return true;

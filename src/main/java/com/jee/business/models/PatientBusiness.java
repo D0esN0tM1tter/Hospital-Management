@@ -2,13 +2,13 @@ package com.jee.business.models;
 
 import java.sql.SQLException;
 
-import com.jee.dao.manager.CrudInterfaceDao;
-import com.jee.dao.manager.PatientManager;
+import com.jee.dao.manager.DaoLogic;
 
-public class PatientBusiness implements CrudInterface {
-	CrudInterfaceDao manager ; 
+
+public class PatientBusiness implements ModelBusinessLogic {
+	DaoLogic manager ; 
 	
-	public PatientBusiness(CrudInterfaceDao manager) {
+	public PatientBusiness(DaoLogic manager) {
 		this.manager = manager ;
 	}
 

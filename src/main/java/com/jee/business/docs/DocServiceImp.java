@@ -10,18 +10,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.jee.Models.Document;
-import com.jee.dao.manager.CrudInterfaceDao;
-import com.jee.dao.manager.DoctorManager;
-import com.jee.dao.manager.DocumentManager;
+import com.jee.dao.manager.DaoLogic;
 
 import java.awt.Desktop;
 
-public class DocServiceImp implements DocumentService {
+public class DocServiceImp implements DocBusinessLogic {
 
-    private CrudInterfaceDao docManager ;
-    private Directories directories ;
-    
-    public DocServiceImp(CrudInterfaceDao docManager) {
+    private DaoLogic docManager ;
+    public DocServiceImp(DaoLogic docManager) {
         this.docManager = docManager;
     }
 
@@ -55,13 +51,13 @@ public class DocServiceImp implements DocumentService {
 	        java.nio.file.Path source = Paths.get(document.getPath());
             
 	        if(document.getDocType().equals("report")) {
-	            target = Paths.get(directories.PDF_DIRECTORY, source.getFileName().toString());
+	            target = Paths.get(Directories.PDF_DIRECTORY, source.getFileName().toString());
 
 	        } else if(document.getDocType().equals("imagery")) {
-	            target = Paths.get(directories.IMAGE_DIRECTORY, source.getFileName().toString());
+	            target = Paths.get(Directories.IMAGE_DIRECTORY, source.getFileName().toString());
                 
 	        } else if(document.getDocType().equals("measurements")) {
-	            target = Paths.get(directories.EXCEL_DIRECTORY, source.getFileName().toString());
+	            target = Paths.get(Directories.EXCEL_DIRECTORY, source.getFileName().toString());
 	        }
 	        
 	        Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
@@ -86,7 +82,7 @@ public class DocServiceImp implements DocumentService {
     
     }
 
-    public void updateDocument(int documentid, Document updatedDocument) throws SQLException {
+    public  void updateDocument(int documentid, Document updatedDocument) throws SQLException {
 		 
 		String oldDocType = docManager.getDocumentType(documentid);
 		if (oldDocType != null && oldDocType.equals(updatedDocument.getDocType())) {
@@ -131,6 +127,8 @@ public class DocServiceImp implements DocumentService {
         System.err.println("Failed to delete file ");
         return -1 ;
     }
+
+	
     public List<Document> selecByPidAndType(int patientId, String docType){
     	 return this.docManager.selecByPidAndType(patientId, docType);
     }

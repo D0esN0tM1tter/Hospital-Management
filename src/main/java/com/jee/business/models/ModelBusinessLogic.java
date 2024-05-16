@@ -2,7 +2,7 @@ package com.jee.business.models;
 
 import java.sql.SQLException;
 
-public interface CrudInterface {
+public interface ModelBusinessLogic {
 	
 	public int insert(Object o);
 	public Object select(int id );

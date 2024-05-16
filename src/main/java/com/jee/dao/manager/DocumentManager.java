@@ -10,7 +10,7 @@ import java.util.List;
 import com.jee.dao.connection.SQLDataSource;
 import com.jee.Models.Document;
 
-public class DocumentManager implements CrudInterfaceDao {
+public class DocumentManager implements DaoLogic {
 
     private SQLDataSource ds;
     private Connection cnc;

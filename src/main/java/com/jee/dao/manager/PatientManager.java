@@ -10,7 +10,7 @@ import com.jee.dao.connection.SQLDataSource;
 import com.jee.Models.Document;
 import com.jee.Models.Patient;
 
-public class PatientManager implements CrudInterfaceDao {
+public class PatientManager implements DaoLogic {
 
     private SQLDataSource ds;
     private Connection cnc;
