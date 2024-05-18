@@ -15,7 +15,7 @@ public interface DaoLogic {
 
     public String getDocumentType(int documentid) throws SQLException;
 	public void updateDocument(int documentId, Document updatedDocument) throws SQLException ;
-
+    public String selectPath(int docId) ;
 	public int update(Object o);
 	public int verify(String login, String password);
 

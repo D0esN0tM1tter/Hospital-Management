@@ -17,7 +17,7 @@ public class DaoFactory {
                 return new DoctorManager(ds);
             
             case "Document" : 
-                return new DoctorManager(ds);
+                return new DocumentManager(ds);
             
             case "Patient" : 
                 return new PatientManager(ds);

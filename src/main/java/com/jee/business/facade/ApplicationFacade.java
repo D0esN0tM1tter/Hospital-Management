@@ -3,6 +3,7 @@ package com.jee.business.facade;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.jee.Models.Document;
 import com.jee.business.docs.DocServiceImp;
@@ -41,6 +42,12 @@ public class ApplicationFacade {
     public int deleteDocument(int docId ) throws SQLException {
         return this.docBusiness.deleteDocument(docId);
     }
+
+    public List<Document> selectDocByIdAndType(int patientId , String type) {
+        return this.docBusiness.selecByPidAndType(patientId, type);
+    }
+
+
 
     // Admin related business : 
     public int insertAdmin(Object o) {

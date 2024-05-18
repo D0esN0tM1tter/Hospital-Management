@@ -115,4 +115,10 @@ public class PatientManager implements DaoLogic {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+    @Override
+    public String selectPath(int docId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'selectPath'");
+    }
 }

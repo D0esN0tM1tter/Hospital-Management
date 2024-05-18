@@ -133,4 +133,10 @@ public class DoctorManager implements DaoLogic {
 		        e.printStackTrace(); 
 		        return -1;
 		    }
-}}
+}
+
+    @Override
+    public String selectPath(int docId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'selectPath'");
+    }}

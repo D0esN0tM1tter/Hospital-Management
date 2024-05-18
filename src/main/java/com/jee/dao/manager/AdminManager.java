@@ -128,4 +128,10 @@ public class AdminManager implements DaoLogic {
         }
     }
 
+    @Override
+    public String selectPath(int docId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'selectPath'");
+    }
+
 }
