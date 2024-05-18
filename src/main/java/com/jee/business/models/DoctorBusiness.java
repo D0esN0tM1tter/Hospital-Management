@@ -31,6 +31,9 @@ public class DoctorBusiness implements ModelBusinessLogic {
     public String delete(int id) throws SQLException {
         return this.manager.delete(id);
     }
+
+
+    
     public boolean verify(String login, String password) {
 		 if(manager.verify(login, password)==1) {
 			 return true;

@@ -6,6 +6,7 @@ private String firstname;
 private String login;
 private String password;
 private int id ;
+
 public Doctor() {}
 public Doctor(String name, String firstname, String login, String password) {
 	this.name = name;
