@@ -43,6 +43,10 @@ public class ApplicationFacade {
         return this.docBusiness.deleteDocument(docId);
     }
 
+    public Document selectDocument(int docId) throws FileNotFoundException, IOException {
+        return docBusiness.selectDocument(docId);
+    }
+
     public List<Document> selectDocByIdAndType(int patientId , String type) {
         return this.docBusiness.selecByPidAndType(patientId, type);
     }
