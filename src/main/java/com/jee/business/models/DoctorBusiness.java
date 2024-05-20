@@ -2,13 +2,15 @@ package com.jee.business.models;
 
 import java.sql.SQLException;
 
+import com.jee.dao.connection.MySQLDataSource;
 import com.jee.dao.manager.DaoLogic;
+import com.jee.dao.manager.DoctorManager;
 
 
 public class DoctorBusiness implements ModelBusinessLogic {
     DaoLogic manager;
-
-    public DoctorBusiness(DaoLogic manager) {
+    
+	public DoctorBusiness(DaoLogic manager) {
         this.manager = manager;
     }
 

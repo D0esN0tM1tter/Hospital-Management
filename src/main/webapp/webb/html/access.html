@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Admins et Docteurs</title>
+	<link rel="stylesheet" href="../css/Access.css">
+</head>
+<body>
+    <div class="container">
+        <h1> Admins</h1>
+        <div class="grid">
+            <div class="card">
+                <img src="../img/5.jpg" alt="Admin 1">
+                <h2>Zaynab Er-reghay</h2>
+                <p>admin </p>
+            </div>
+            <div class="card">
+                <img src="../img/2.jpg" alt="Admin 2">
+                <h2>Fatima azzahra hasnaoui</h2>
+                <p>admin</p>
+            </div>
+            <div class="card">
+                <img src="../img/3.jpg" alt="Admin 3">
+                <h2>Bilal lahfari</h2>
+                <p>admin</p>
+            </div>
+            <div class="card">
+                <img src="../img/3.jpg" alt="Admin 4">
+                <h2>Ayoub khazaz</h2>
+                <p>admin</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Doctor Management</h1>
+        <div class="grid" id="doctor-grid">
+            <div class="card">
+                <img src="../img/img-1.jpg" alt="Doctor 1">
+                <h2>Dr. Alice Martin</h2>
+                <p>Cardiologue</p>
+                <button  class="button" >delete</button>
+            </div>
+            <div class="card">
+                <img src="../img/img-2.jpg" alt="Doctor 2">
+                <h2>Dr. Robert Brown</h2>
+                <p>Neurologue</p>
+                <button  class="button" >delete</button>
+            </div>
+            <div class="card">
+                <img src="../img/img-1.jpg" alt="Doctor 3">
+                <h2>Dr. Claire Legrand</h2>
+                <p>Chirurgienne</p>
+                <button  class="button" >delete</button>
+            </div>
+            <div class="card">
+                <img src="../img/img-6.jpg" alt="Doctor 4">
+                <h2>Dr.Marc Leroy</h2>
+                <p>Dermatologue</p>
+                <button  class="button" >delete</button>
+                </div>
+                <div class="card hidden">
+                <img src="../img/img-4.jpg" alt="Doctor 5">
+                <h2>Dr. Sophie Blanc</h2>
+
+                <p>Pédiatre</p>
+                <button  class="button" >delete</button>
+                </div>
+                <div class="card hidden">
+                <img src="../img/img-6.jpg" alt="Doctor 6">
+                <h2>Dr.Paul Moreau</h2>
+                <p>Radiologue</p>
+                <button  class="button" >delete</button>
+                </div>
+                <div class="card hidden">
+                <img src="../img/img-5.jpg" alt="Doctor 7">
+                <h2>Dr. Julie Bernard</h2>
+                <p>Oncologue</p>
+                <button  class="button" >delete</button>
+                </div>
+                <div class="card hidden">
+                <img src="../img/img-3.jpg" alt="Doctor 8">
+                <h2>Dr. Nicolas Petit</h2>
+                <p>Gynécologue</p>
+                <button  class="button" >delete</button>
+                </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                <button  class="button" onclick="toggleDoctors()">More</button>
+                <button  class="button" >home Page</button>
+                </div>
+                </div>
+                
+                <script>
+                    function toggleDoctors() {
+                        var hiddenCards = document.querySelectorAll('#doctor-grid .hidden');
+                        hiddenCards.forEach(function(card) {
+                            if (card.style.display === "none" || card.style.display === "") {
+                                card.style.display = "block";
+                                setTimeout(function() {
+                                    card.style.opacity = "1";
+                                }, 10);
+                            } else {
+                                card.style.opacity = "0";
+                                setTimeout(function() {
+                                    card.style.display = "none";
+                                }, 200);
+                            }
+                        });
+                    }
+                </script>
+                

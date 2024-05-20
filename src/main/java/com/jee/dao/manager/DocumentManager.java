@@ -27,14 +27,14 @@ public class DocumentManager implements DaoLogic {
         }
         Document document = (Document) obj;
         int rowsAffected = 0;
-        String sql = "INSERT INTO hospital.document VALUES (? , ? , ? , ? , ? , ?)";
+        String sql = "INSERT INTO hospital.document (patientId, docType, path, toc, description) VALUES (?, ?, ?, ?, ?)";
+
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
-            stmt.setInt(1, document.getId());
-            stmt.setInt(2, document.getPatientId());
-            stmt.setString(3, document.getDocType());
-            stmt.setString(4 , document.getPath());
-            stmt.setTimestamp(5, document.getToc());
-            stmt.setString(6, document.getDescription());
+            stmt.setInt(1, document.getPatientId());
+            stmt.setString(2, document.getDocType());
+            stmt.setString(3 , document.getPath());
+            stmt.setTimestamp(4, document.getToc());
+            stmt.setString(5, document.getDescription());
 
             System.err.println("Record inserted successfully.");
             rowsAffected = stmt.executeUpdate();
@@ -68,24 +68,15 @@ public class DocumentManager implements DaoLogic {
     }
 
 
-    public void updateDocument(int documentId, Document updatedDocument) throws SQLException {
-	    String deleteSql = "DELETE FROM document WHERE Id = ? ";
-	    String insertSql = "INSERT INTO document (id,patientId, docType, paths, dateEnregistrement) VALUES (?,?, ?, ?, ?)";
-
-	    try (PreparedStatement deleteStatement =  cnc.prepareStatement(deleteSql);
-	         PreparedStatement insertStatement =  cnc.prepareStatement(insertSql)) {
-
-	        deleteStatement.setInt(1, documentId);
-	        deleteStatement.executeUpdate();
-
-	        insertStatement.setInt(1,documentId);
-	        insertStatement.setInt(2, updatedDocument.getPatientId());
-	        insertStatement.setString(3, updatedDocument.getDocType());
-	        insertStatement.setString(4, updatedDocument.getPath());
-	        insertStatement.setTimestamp(5, updatedDocument.getToc()); 
-	        insertStatement.executeUpdate();
-	    }
-	}
+    public void updateDocument(int documentId, String newPath) throws SQLException {
+        String updateSql = "UPDATE document SET path = ? WHERE id = ?";
+        
+        try (PreparedStatement updateStatement = cnc.prepareStatement(updateSql)) {
+            updateStatement.setString(1, newPath);
+            updateStatement.setInt(2, documentId);
+            updateStatement.executeUpdate();
+        }
+    }
 	
 	public String getDocumentType(int documentid) throws SQLException {
 		String selectSql = "SELECT docType FROM document WHERE Id = ? ";
@@ -160,21 +151,23 @@ public String delete(int id) throws SQLException {
 
 @Override
 public List<Document> selecByPidAndType(int patientId, String docType) {
+    // Initialisation de la liste :
+    List<Document> list = new ArrayList<>();
 
-    // initializing the list : 
-    List<Document> list = new ArrayList<>() ;
+    // 1 : Formuler la requête :
+    String query = "SELECT * FROM document WHERE doctype = ? AND patientId = ?";
 
-    // 1 : formulate the query : 
-    String query = "SELECT * FROM document JOIN patient ON document.patientId = patient.id WHERE document.type = ? ";
-    //2 : Creating a statement :
-    try(PreparedStatement stmt = this.cnc.prepareStatement(query)) {
-        // Setting the parameter of the parameter of the query : 
-        stmt.setString(1, query);
-        // Creating a resultset : 
-        ResultSet rs = stmt.executeQuery() ; 
+    // 2 : Créer un PreparedStatement :
+    try (PreparedStatement stmt = this.cnc.prepareStatement(query)) {
+        // Définir les paramètres de la requête :
+        stmt.setString(1, docType);
+        stmt.setInt(2, patientId);
+
+        // Créer un ResultSet :
+        ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            Document doc = new Document() ; 
+            Document doc = new Document();
             doc.setId(rs.getInt("id"));
             doc.setDocType(rs.getString("doctype"));
             doc.setPath(rs.getString("path"));
@@ -183,12 +176,13 @@ public List<Document> selecByPidAndType(int patientId, String docType) {
 
             list.add(doc);
         }
-    }catch(Exception e) {
+    } catch (SQLException e) {
         e.printStackTrace();
     }
 
-    return list ;
+    return list;
 }
+
 
 @Override
 public int update(Object o) {

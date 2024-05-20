@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 
 public class SQLDataSource {
 	
-	protected String driver;
-	protected String url;
-	protected String user;
-	protected String password;
+	private String driver;
+	private String url;
+	private String user;
+	private String password;
 	
 	public SQLDataSource() {
 	}
@@ -19,12 +19,6 @@ public class SQLDataSource {
 		this.user = user;
 		this.password = password;
 	}
-
-	public SQLDataSource(String driver , String url) {
-		this.driver = driver ; 
-		this.url = driver ; 
-	}
-
 
 	public String getDriver() {
 		return driver;

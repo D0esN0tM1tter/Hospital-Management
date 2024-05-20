@@ -2,7 +2,10 @@ package com.jee.business.docs;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -12,127 +15,147 @@ import java.util.List;
 import com.jee.Models.Document;
 import com.jee.dao.manager.DaoLogic;
 
+import jakarta.servlet.http.Part;
+
 import java.awt.Desktop;
 
 public class DocServiceImp implements DocBusinessLogic {
 
-	private DaoLogic docManager;
+    private DaoLogic docManager ;
+    
+    public DocServiceImp(DaoLogic docManager) {
+        this.docManager = docManager;
+    }
 
-	public DocServiceImp(DaoLogic docManager) {
-		this.docManager = docManager;
-	}
+    @Override
+    public Document selectDocument(int docId) throws FileNotFoundException, IOException {
+        
+        //1 : Retrieve document's path using its  Id
+        Document doc = (Document) this.docManager.select(docId) ;
+        String path = doc.getPath() ; 
+        
+        try {
+            // Creating a file : 
+            File file = new File(path) ; 
+            //Open the file : 
+            Desktop.getDesktop().open(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public Document selectDocument(int docId) throws FileNotFoundException, IOException {
 
-		// 1 : Retrieve document's path using its Id
-		Document doc = (Document) this.docManager.select(docId);
-		String path = doc.getPath();
+        return doc ; 
+    }
 
-		try {
-			// Creating a file :
-			File file = new File(path);
-			// Open the file :
-			Desktop.getDesktop().open(file);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    @Override
+    public int insertDocument(Document document, Part filePart) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            // Déterminer le répertoire cible en fonction du type de document
+            File target = null;
+            if (document.getDocType().equals("pdf")) {
+                target = new File(Directories.PDF_DIRECTORY, filePart.getSubmittedFileName());
+            } else if (document.getDocType().equals("png")) {
+                target = new File(Directories.IMAGE_DIRECTORY, filePart.getSubmittedFileName());
+            } else if (document.getDocType().equals("excel")) {
+                target = new File(Directories.EXCEL_DIRECTORY, filePart.getSubmittedFileName());
+            }
 
-		return doc;
-	}
+            // Déplacer le fichier
+            inputStream = filePart.getInputStream();
+            outputStream = new FileOutputStream(target);
 
-	@Override
-	public int insertDocument(Document document) {
-		try {
-			// Déclarer la variable target en dehors des blocs if/else if
-			java.nio.file.Path target = null;
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
 
-			// Déplacer le fichier vers le répertoire cible en fonction du type de document
-			java.nio.file.Path source = Paths.get(document.getPath());
+            // Mettre à jour le chemin du document
+            document.setPath(target.getAbsolutePath());
 
-			if (document.getDocType().equals("report")) {
-				target = Paths.get(Directories.PDF_DIRECTORY, source.getFileName().toString());
+            // Logique pour insérer les détails du document dans la base de données
+            // docManager.insert(document); // Assurez-vous d'avoir implémenté cette méthode
+            System.out.println(document);
+            int numb = docManager.insert(document);
+            if(numb > 0) {
+           	 System.out.println("Document déplacé et inséré dans la base de données");
 
-			} else if (document.getDocType().equals("imagery")) {
-				target = Paths.get(Directories.IMAGE_DIRECTORY, source.getFileName().toString());
+            	return 1 ;
+            }else {
+            	return -1 ;
+            }
+            
 
-			} else if (document.getDocType().equals("measurements")) {
-				target = Paths.get(Directories.EXCEL_DIRECTORY, source.getFileName().toString());
-			}
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Gérer les exceptions en cas d'échec du déplacement du fichier
+            return -1; // Ou tout autre code d'erreur que vous préférez
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-			Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
-
-			// Dupliquer les '\' dans le chemin du fichier
-			String duplicatedPath = target.toString().replace("\\", "\\\\");
-
-			// Mettre à jour le chemin du document avec le chemin dupliqué
-			document.setPath(duplicatedPath);
-
-			// Vous pouvez également ajouter ici la logique pour insérer les détails du
-			// document dans la base de données
-			docManager.insert(document);
-
-			// Retourner un code de succès ou un identifiant de document inséré
-			System.out.println("document deplacé et inseré dans la base de données");
-			return 1; // Ou tout autre code de succès que vous préférez
-		} catch (IOException e) {
-			e.printStackTrace();
-			// Gérer les exceptions en cas d'échec du déplacement du fichier
-			return -1; // Ou tout autre code d'erreur que vous préférez
-		}
-
-	}
-
-	public void updateDocument(int documentid, Document updatedDocument) throws SQLException {
-
+    public  void updateDocument(int documentid, String newPath) throws SQLException {
+		 
 		// String oldDocType = docManager.getDocumentType(documentid);
 		// if (oldDocType != null && oldDocType.equals(updatedDocument.getDocType())) {
 
-		// here i m not sure if i have to do the delete method or not because in the
-		// next update i do delete the doc
-		// in that case it will be String oldFilePath =
-		// docManager.selectPath(documentid) and we should then add it to the
-		// CrudInterfaceDao
-		String oldFilePath = docManager.selectPath(documentid);
+            // here i m not sure if i have to do the delete method or not because in the next update i do delete the doc
+            //  in that case it will be String oldFilePath = docManager.selectPath(documentid) and we should then add it to the CrudInterfaceDao
+			String oldFilePath = docManager.selectPath(documentid);
 
-		if (oldFilePath != null) {
-			File fileToDelete = new File(oldFilePath);
-			if (fileToDelete.exists() && fileToDelete.isFile()) {
-				if (fileToDelete.delete()) {
-					System.out.println("File deleted: " + oldFilePath);
+			if (oldFilePath != null) {
+				File fileToDelete = new File(oldFilePath);
+				if (fileToDelete.exists() && fileToDelete.isFile()) {
+					if (fileToDelete.delete()) {
+						System.out.println("File deleted: " + oldFilePath);
+					} else {
+						System.out.println("Failed to delete file: " + oldFilePath);
+					}
 				} else {
-					System.out.println("Failed to delete file: " + oldFilePath);
+					System.out.println("File not found: " + oldFilePath);
 				}
+				docManager.updateDocument(documentid, newPath);
 			} else {
-				System.out.println("File not found: " + oldFilePath);
+				System.out.println("File path not found for  ID: " + documentid );
 			}
-			docManager.updateDocument(documentid, updatedDocument);
-		} else {
-			System.out.println("File path not found for  ID: " + documentid);
-		}
+		// } else {
+		// 	System.out.println("Updated document type does not match the type of the oldest document.");
+		// }
+}
 
-	}
+    public int deleteDocument(int docId) throws SQLException {
+        // 1: Delete the file from the database : 
+        String path = this.docManager.delete(docId) ; 
+        // 2 : Delete file from the local drive : 
+        File fileToDelete = new File(path) ; 
 
-	public List<Document> selecByPidAndType(int patientId, String docType) {
-		return this.docManager.selecByPidAndType(patientId, docType);
-	}
+        if (fileToDelete.exists() && fileToDelete.isFile()) {
+            if (fileToDelete.delete()) {
+                System.err.println("File deleted successfully");
+                return 1 ; 
+            }
+        }
 
-	@Override
-	public int deleteDocument(int docId) throws SQLException {
-		String path = this.docManager.delete(docId);
+        System.err.println("Failed to delete file ");
+        return -1 ;
+    }
 
-		File fileToDelete = new File(path);
+	
+    public List<Document> selecByPidAndType(int patientId, String docType){
+    	 return this.docManager.selecByPidAndType(patientId, docType);
+    }
 
-		if (fileToDelete.exists() && fileToDelete.isFile()) {
-			if (fileToDelete.delete()) {
-				System.err.println("File deleted successfully");
-				return 1;
-			}
-		}
-
-		System.err.println("Filed to delete");
-		return -1;
-
-	}
-
+	
 }

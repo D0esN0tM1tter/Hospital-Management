@@ -29,7 +29,7 @@ public class AdminManager implements DaoLogic {
             throw new IllegalArgumentException("Object must be of type Admin");
         }
         Admin admin = (Admin) obj;
-        String sql = "INSERT INTO admins (firstname, lastname, username, passwd) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO admin (firstname, lastname, username, passwd) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setString(1, admin.getFirstname());
             stmt.setString(2, admin.getLastname());
@@ -44,7 +44,7 @@ public class AdminManager implements DaoLogic {
 
     @Override
     public Admin select(int id) {
-        String sql = "SELECT * FROM admins WHERE id = ?";
+        String sql = "SELECT * FROM admin WHERE id = ?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -64,7 +64,7 @@ public class AdminManager implements DaoLogic {
             throw new IllegalArgumentException("Object must be of type Admin");
         }
         Admin admin = (Admin) obj;
-        String sql = "UPDATE admins SET firstname=?, lastname=?, username=?, passwd=? WHERE id=?";
+        String sql = "UPDATE admin SET firstname=?, lastname=?, username=?, passwd=? WHERE id=?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setString(1, admin.getFirstname());
             stmt.setString(2, admin.getLastname());
@@ -80,7 +80,7 @@ public class AdminManager implements DaoLogic {
 
     @Override
     public String delete(int id) {
-        String sql = "DELETE FROM admins WHERE id = ?";
+        String sql = "DELETE FROM admin WHERE id = ?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setInt(1, id);
             int affectedRows = stmt.executeUpdate();
@@ -104,7 +104,7 @@ public class AdminManager implements DaoLogic {
     }
 
     @Override
-    public void updateDocument(int documentId, Document updatedDocument) {
+    public void updateDocument(int documentId,  String newPath) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -86,6 +86,13 @@ public class Document {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Document [id=" + id + ", patientId=" + patientId + ", docType=" + docType + ", path=" + path + ", toc="
+				+ toc + ", description=" + description + "]";
+	}
+
+
 	
 	   
 	

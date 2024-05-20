@@ -7,8 +7,6 @@ public class MySQLDataSource extends SQLDataSource{
 	}
 
 	public MySQLDataSource() {
-		super("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost/hospital", "sqluser", "password");
+		super("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost/hospital", "root", "");
 	}
-	
-
 }

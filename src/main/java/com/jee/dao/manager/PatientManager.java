@@ -27,7 +27,7 @@ public class PatientManager implements DaoLogic {
         }
         Patient patient = (Patient) obj;
         int rowsAffected = 0;
-        String sql = "INSERT INTO patients VALUES (?, ?, ?)";
+        String sql = "INSERT INTO patient VALUES (?, ?, ?)";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setInt(1, patient.getId());
             stmt.setString(2, patient.getFname());
@@ -43,7 +43,7 @@ public class PatientManager implements DaoLogic {
     @Override
     public Object select(int id) {
         Patient patient = null;
-        String sql = "SELECT * FROM patients WHERE id = ?";
+        String sql = "SELECT * FROM patient WHERE id = ?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -66,7 +66,7 @@ public class PatientManager implements DaoLogic {
         }
         Patient patient = (Patient) obj;
         int rowsAffected = 0;
-        String sql = "UPDATE patients SET fname=?, lname=? WHERE id=?";
+        String sql = "UPDATE patient SET fname=?, lname=? WHERE id=?";
         try (PreparedStatement stmt = cnc.prepareStatement(sql)) {
             stmt.setString(1, patient.getFname());
             stmt.setString(2, patient.getLname());
@@ -80,7 +80,7 @@ public class PatientManager implements DaoLogic {
 
     @Override
     public String delete(int id) throws SQLException {
-        String query = "DELETE FROM patients WHERE id = ?";
+        String query = "DELETE FROM patient WHERE id = ?";
         try (PreparedStatement stm = cnc.prepareStatement(query)) {
             stm.setInt(1, id);
             int rowsAffected = stm.executeUpdate();
@@ -105,7 +105,7 @@ public class PatientManager implements DaoLogic {
 	}
 
 	@Override
-	public void updateDocument(int documentId, Document updatedDocument) throws SQLException {
+	public void updateDocument(int documentId,  String newPath) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}

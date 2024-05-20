@@ -7,7 +7,7 @@ import com.jee.dao.connection.SQLDataSource;
 public class DaoFactory {
 
     public static DaoLogic createManager(String entityName) throws SQLException {
-        SQLDataSource ds = new MySQLDataSource();
+        MySQLDataSource ds = new MySQLDataSource();
         
         switch (entityName) {
             case "Admin":

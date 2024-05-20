@@ -10,6 +10,7 @@ public class Admin {
 
 	   
 	   
+	   
 	public Admin(String firstname,String lastname,String username, String passwd) {
 		this.firstname=firstname;
 		this.lastname=lastname;
@@ -72,8 +73,5 @@ public class Admin {
 		this.lastname = lastname;
 	}
 	  
-	
-	
-	
 
 }

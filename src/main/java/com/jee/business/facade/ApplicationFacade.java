@@ -12,6 +12,8 @@ import com.jee.business.models.DoctorBusiness;
 import com.jee.business.models.PatientBusiness;
 import com.jee.dao.manager.DaoFactory;
 
+import jakarta.servlet.http.Part;
+
 public class ApplicationFacade {
 
     private DocServiceImp docBusiness;
@@ -21,37 +23,27 @@ public class ApplicationFacade {
 
     public ApplicationFacade() throws SQLException{
         this.docBusiness = new DocServiceImp(DaoFactory.createManager("Document")); 
-        this.adminBusiness = new AdminBusiness(DaoFactory.createManager("admin")) ;
+        this.adminBusiness = new AdminBusiness(DaoFactory.createManager("Admin"));
         this.doctBusiness = new DoctorBusiness(DaoFactory.createManager("Doctor")); 
         this.paBusiness = new PatientBusiness(DaoFactory.createManager("Patient")); 
     }
 
     // Document related business : 
-    public int insertDocument(Document doc) {
-        return this.docBusiness.insertDocument(doc) ; 
+    public int insertDocument(Document doc , Part p) {
+        return this.docBusiness.insertDocument(doc , p) ; 
     }
 
     public Document selDocument(int id ) throws FileNotFoundException, IOException {
         return this.docBusiness.selectDocument(id) ;
     }
 
-    public void updateDocument(int docId , Document updatedDocument) throws SQLException {
-         this.docBusiness.updateDocument(docId, updatedDocument);
+    public void updateDocument(int docId , String newPath) throws SQLException {
+         this.docBusiness.updateDocument(docId, newPath);
     }
 
     public int deleteDocument(int docId ) throws SQLException {
         return this.docBusiness.deleteDocument(docId);
     }
-
-    public Document selectDocument(int docId) throws FileNotFoundException, IOException {
-        return docBusiness.selectDocument(docId);
-    }
-
-    public List<Document> selectDocByIdAndType(int patientId , String type) {
-        return this.docBusiness.selecByPidAndType(patientId, type);
-    }
-
-
 
     // Admin related business : 
     public int insertAdmin(Object o) {
@@ -109,5 +101,11 @@ public class ApplicationFacade {
         return this.paBusiness.delete(id);
 
     }
-
+    
+    public boolean authDoctor(String login, String password) {
+    	return this.doctBusiness.verify(login, password);
+    
 }
+    public List<Document> selectDocByIdAndType(int patientId , String type) {
+        return this.docBusiness.selecByPidAndType(patientId, type);
+    }}
